@@ -1,0 +1,120 @@
+group 'com.firstorion.engageplugin.flutter_engage_plugin'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+//            url "https://firstorion.jfrog.io/firstorion/fo-libs-release-external/"
+            url "https://firstorion.jfrog.io/firstorion/libs-release-local/"
+            credentials {
+                def artifactoryPropertiesFile = rootProject.file("artifactory.properties")
+                def artifactoryProperties = new Properties()
+                artifactoryProperties.load(new FileInputStream(artifactoryPropertiesFile))
+
+                username = artifactoryProperties['username'] // The user name
+                password = artifactoryProperties['password'] // The password
+            }
+        }
+
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.24.15'
+    }
+}
+
+
+allprojects {
+    apply plugin: 'com.jfrog.artifactory'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+//            url "https://firstorion.jfrog.io/firstorion/fo-libs-release-external/"
+            url "https://firstorion.jfrog.io/firstorion/libs-release-local/"
+            credentials {
+                def artifactoryPropertiesFile = rootProject.file("artifactory.properties")
+                def artifactoryProperties = new Properties()
+                artifactoryProperties.load(new FileInputStream(artifactoryPropertiesFile))
+
+                username = artifactoryProperties['username'] // The user name
+                password = artifactoryProperties['password'] // The password
+            }
+        }
+    }
+}
+
+
+
+artifactory {
+    contextUrl = "https://firstorion.jfrog.io/firstorion/"
+    resolve {
+        repository {
+            repoKey = 'libs-release-local'
+            def artifactoryPropertiesFile = rootProject.file("artifactory.properties")
+            def artifactoryProperties = new Properties()
+            artifactoryProperties.load(new FileInputStream(artifactoryPropertiesFile))
+
+            username = artifactoryProperties['username'] // The user name
+            password = artifactoryProperties['password'] // The password
+            maven = true
+        }
+    }
+}
+
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.firstorion.engageplugin.flutter_engage_plugin'
+    }
+
+    compileSdk 33
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    defaultConfig {
+        minSdkVersion 19
+    }
+
+    dependencies {
+        api 'com.firstorion:engage-core:4.0.4'
+        api 'com.firstorion:engage-contacts:4.0.4'
+        api 'com.firstorion:engage-firebase:4.0.4'
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        testImplementation 'org.mockito:mockito-core:5.1.1'
+
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+
+            testLogging {
+               events "passed", "skipped", "failed", "standardOut", "standardError"
+               outputs.upToDateWhen {false}
+               showStandardStreams = true
+            }
+        }
+    }
+}
+

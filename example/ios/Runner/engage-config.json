@@ -1,0 +1,20 @@
+{
+    "debug": {
+        "engageApiKey": "com.firstorion.enterprise.engagecalling.uae",
+        "engagePushConfig": "foios-enterprise-dev",
+        "engageEndpoint": "api.engage-ae.com"
+    },
+    "test": {
+        "engageApiKey": "com.firstorion.enterprise.engagecalling.uae",
+        "engagePushConfig": "foios-enterprise-dev",
+        "engageEndpoint": "api.engage-ae.com"
+    },
+    "production": {
+        "engageApiKey": "com.firstorion.enterprise.engagecalling.uae",
+        "engagePushConfig": "foios-enterprise",
+        "engageEndpoint": "api.engage-ae.com"
+    },
+    "appIsVoipEnabled": false,
+    "engageChallengeType": "push",
+    "configVersion": "0.1"
+}

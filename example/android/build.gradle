@@ -1,0 +1,28 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+        url "https://firstorion.jfrog.io/firstorion/libs-release-local/"
+        credentials {
+            def artPropFile = rootProject.file("artifactory.properties")
+            def artProps = new Properties()
+            artProps.load(new FileInputStream(artPropFile))
+            username = artProps ['username']
+            password = artProps ['password']
+            }
+        }
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

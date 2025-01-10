@@ -1,0 +1,7 @@
+{
+  "EngageEndpoint": "https://stage-api.engage-ae.com",
+  "EngageAppId": "f8ed44a0-4fad-4998-9337-0ecb50e02e42",
+  "EngageTokenType": "fofcm",
+  "EngageVerificationType": "push",
+  "ConfigVersion": 3.0
+}
